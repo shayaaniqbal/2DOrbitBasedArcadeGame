@@ -44,6 +44,14 @@ public class Level : MonoBehaviour
 
     public void HandlePlanetHit(PlanetController shooter, PlanetController target)
     {
+        if (IsFinalPairFreeForAll(shooter, target))
+        {
+            DestroyPlanet(shooter);
+            DestroyPlanet(target);
+            Debug.Log("Game Won!");
+            return;
+        }
+
         if (isFreeForAll)
         {
             DestroyPlanet(shooter);
@@ -61,7 +69,7 @@ public class Level : MonoBehaviour
 
             if (targetIndex == currentIndex + 1)
             {
-                if (IsFinalPair(shooter, target))
+                if (IsFinalPairForArrangement(shooter, target))
                 {
                     // Both are last two and in correct order
                     DestroyPlanet(shooter);
@@ -83,7 +91,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    private bool IsFinalPair(PlanetController shooter, PlanetController target)
+    private bool IsFinalPairForArrangement(PlanetController shooter, PlanetController target)
     {
         if (planets.Count != 2) return false;
 
@@ -91,6 +99,13 @@ public class Level : MonoBehaviour
 
         return (lastTwo[0] == shooter && lastTwo[1] == target);
     }
+
+    private bool IsFinalPairFreeForAll(PlanetController a, PlanetController b)
+    {
+        // Just check if only these two are left
+        return planets.Count == 2 && planets.Contains(a) && planets.Contains(b);
+    }
+
 
     public void DestroyPlanet(PlanetController planet)
     {
