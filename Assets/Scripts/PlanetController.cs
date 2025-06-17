@@ -90,13 +90,21 @@ public class PlanetController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // If it hits a death zone, trigger game over
+        if (collision.gameObject.CompareTag("DeathZone"))
+        {
+            Level.Instance.DestroyPlanet(this);
+            Debug.Log("Game Over - Planet hit the DeathZone");
+            return;
+        }
+
+        // Normal planet-planet collision logic
         if (!isLaunched) return;
 
         PlanetController hitPlanet = collision.gameObject.GetComponent<PlanetController>();
         if (hitPlanet != null && hitPlanet != this && !hitPlanet.isLaunched)
         {
-            GameManager.Instance.SwitchControlTo(hitPlanet);
-            GameManager.Instance.DestroyPlanet(this);
+            Level.Instance.HandlePlanetHit(this, hitPlanet);
         }
     }
 }
