@@ -1,22 +1,34 @@
 using UnityEngine;
+using DG.Tweening; // Needed for tween control
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlanetController : MonoBehaviour
 {
-    public bool isOrbiting = true;
-    public Transform orbitCenter;
-    public float orbitSpeed = 30f;
+    public DOTweenPath pathTween; // Assign in Inspector
     public bool isPlayerControlled = false;
     public float shootForce = 10f;
     public LineRenderer aimLine;
 
     private Rigidbody2D rb;
     private bool isLaunched = false;
+    private Tween orbitTween;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
+        rb.freezeRotation = true;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        // Start DOTween path if assigned
+        if (pathTween != null)
+        {
+            orbitTween = transform.DOPath(pathTween.wps.ToArray(), pathTween.duration, PathType.CatmullRom)
+                .SetEase(pathTween.easeType)
+                .SetLoops(pathTween.loops)
+                .SetUpdate(UpdateType.Fixed)
+                .SetTarget(gameObject);
+        }
     }
 
     void Update()
@@ -27,24 +39,9 @@ public class PlanetController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                Shoot();
+                Vector2 shootDirection = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position;
+                Shoot(shootDirection);
             }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (isOrbiting && !isLaunched)
-        {
-            OrbitAroundCenter();
-        }
-    }
-
-    void OrbitAroundCenter()
-    {
-        if (orbitCenter != null)
-        {
-            transform.RotateAround(orbitCenter.position, Vector3.forward, orbitSpeed * Time.fixedDeltaTime);
         }
     }
 
@@ -55,17 +52,22 @@ public class PlanetController : MonoBehaviour
 
         if (aimLine != null)
         {
+            aimLine.enabled = true;
             aimLine.SetPosition(0, transform.position);
             aimLine.SetPosition(1, (Vector2)transform.position + dir * 5f);
         }
     }
 
-    void Shoot()
+    void Shoot(Vector2 direction)
     {
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 dir = (mouseWorld - transform.position).normalized;
-        rb.isKinematic = false;
-        rb.AddForce(dir * shootForce, ForceMode2D.Impulse);
+        // Kill path tween
+        if (orbitTween != null && orbitTween.IsActive()) orbitTween.Kill();
+
+        // Launch with velocity
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.velocity = direction.normalized * shootForce;
+
+        // Update state
         isLaunched = true;
         isPlayerControlled = false;
         if (aimLine != null) aimLine.enabled = false;
@@ -73,14 +75,12 @@ public class PlanetController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isLaunched)
-        {
-            PlanetController hitPlanet = collision.gameObject.GetComponent<PlanetController>();
-            if (hitPlanet != null && !hitPlanet.isLaunched)
-            {
-                GameManager.Instance.SwitchControlTo(hitPlanet);
-            }
+        if (!isLaunched) return;
 
+        PlanetController hitPlanet = collision.gameObject.GetComponent<PlanetController>();
+        if (hitPlanet != null && hitPlanet != this && !hitPlanet.isLaunched)
+        {
+            GameManager.Instance.SwitchControlTo(hitPlanet);
             GameManager.Instance.DestroyPlanet(this);
         }
     }
