@@ -11,7 +11,9 @@ public class Level : MonoBehaviour
     [Header("Planet Settings")]
     public List<PlanetController> planets = new List<PlanetController>();
 
+
     private int currentIndex = 0; // For ordered mode
+    private List<PlanetController> originalOrder = new List<PlanetController>();
 
     void Awake()
     {
@@ -20,10 +22,11 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+        originalOrder = new List<PlanetController>(planets);
+
         if (planets.Count > 0)
         {
-            currentIndex = 0;
-            SwitchControlTo(planets[currentIndex]);
+            SwitchControlTo(planets[0]);
         }
     }
 
@@ -43,22 +46,30 @@ public class Level : MonoBehaviour
     {
         if (isFreeForAll)
         {
-            // Free for all mode: allow any hit
             DestroyPlanet(shooter);
             SwitchControlTo(target);
 
             if (planets.Count == 1)
             {
                 Debug.Log("Game Won!");
-                // Optional: handle win UI
             }
         }
         else
         {
-            // Ordered Mode: target must be next in list
-            int targetIndex = planets.IndexOf(target);
+            int shooterIndex = originalOrder.IndexOf(shooter);
+            int targetIndex = originalOrder.IndexOf(target);
+
             if (targetIndex == currentIndex + 1)
             {
+                if (IsFinalPair(shooter, target))
+                {
+                    // Both are last two and in correct order
+                    DestroyPlanet(shooter);
+                    DestroyPlanet(target);
+                    Debug.Log("Game Won!");
+                    return;
+                }
+
                 DestroyPlanet(shooter);
                 currentIndex = targetIndex;
                 SwitchControlTo(target);
@@ -70,6 +81,15 @@ public class Level : MonoBehaviour
                 TriggerGameOver();
             }
         }
+    }
+
+    private bool IsFinalPair(PlanetController shooter, PlanetController target)
+    {
+        if (planets.Count != 2) return false;
+
+        var lastTwo = originalOrder.GetRange(originalOrder.Count - 2, 2);
+
+        return (lastTwo[0] == shooter && lastTwo[1] == target);
     }
 
     public void DestroyPlanet(PlanetController planet)
