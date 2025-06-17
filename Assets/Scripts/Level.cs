@@ -49,7 +49,8 @@ public class Level : MonoBehaviour
             DestroyPlanet(shooter);
             DestroyPlanet(target);
             UIManager.Instance.ShowWin();
-           
+          
+
             return;
         }
 
@@ -61,7 +62,7 @@ public class Level : MonoBehaviour
             if (planets.Count == 1)
             {
                 UIManager.Instance.ShowWin();
-                
+               
             }
         }
         else
@@ -77,7 +78,7 @@ public class Level : MonoBehaviour
                     DestroyPlanet(shooter);
                     DestroyPlanet(target);
                     UIManager.Instance.ShowWin();
-                   
+                  
                     return;
                 }
 

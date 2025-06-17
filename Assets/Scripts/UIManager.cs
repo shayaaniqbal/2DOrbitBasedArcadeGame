@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,7 +26,10 @@ public class UIManager : MonoBehaviour
         HideAllPanels();
     }
 
-    public void ShowWin() => ShowPanel(winPanel);
+    public void ShowWin()
+    {
+        StartCoroutine(LoadSceneAfterDelay());
+    }
     public void ShowGameOver() => ShowPanel(gameOverPanel);
     public void ShowSettings() => ShowPanel(settingsPanel);
     public void HideSettings() => HidePanel(settingsPanel);
@@ -66,5 +70,14 @@ public class UIManager : MonoBehaviour
 
     }
 
-    
+
+    IEnumerator LoadSceneAfterDelay()
+    {
+        LevelManager.Instance.CompleteLevel();
+        winPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(0);
+    }
+
 }
+
