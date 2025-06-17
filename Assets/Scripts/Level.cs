@@ -48,7 +48,7 @@ public class Level : MonoBehaviour
         {
             DestroyPlanet(shooter);
             DestroyPlanet(target);
-            Debug.Log("Game Won!");
+            UIManager.Instance.ShowWin();
             return;
         }
 
@@ -59,7 +59,7 @@ public class Level : MonoBehaviour
 
             if (planets.Count == 1)
             {
-                Debug.Log("Game Won!");
+                UIManager.Instance.ShowWin();
             }
         }
         else
@@ -74,7 +74,7 @@ public class Level : MonoBehaviour
                     // Both are last two and in correct order
                     DestroyPlanet(shooter);
                     DestroyPlanet(target);
-                    Debug.Log("Game Won!");
+                    UIManager.Instance.ShowWin();
                     return;
                 }
 
@@ -85,6 +85,7 @@ public class Level : MonoBehaviour
             else
             {
                 Debug.Log("Game Over - Wrong target hit");
+                UIManager.Instance.ShowGameOver();
                 DestroyPlanet(shooter);
                 TriggerGameOver();
             }
