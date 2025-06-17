@@ -1,10 +1,10 @@
 using UnityEngine;
-using DG.Tweening; // Needed for tween control
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlanetController : MonoBehaviour
 {
-    public DOTweenPath pathTween; // Assign in Inspector
+    public DOTweenPath pathTween; // Optional path (orbit)
     public bool isPlayerControlled = false;
     public float shootForce = 10f;
     public LineRenderer aimLine;
@@ -20,15 +20,7 @@ public class PlanetController : MonoBehaviour
         rb.freezeRotation = true;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        // Start DOTween path if assigned
-        if (pathTween != null)
-        {
-            orbitTween = transform.DOPath(pathTween.wps.ToArray(), pathTween.duration, PathType.CatmullRom)
-                .SetEase(pathTween.easeType)
-                .SetLoops(pathTween.loops)
-                .SetUpdate(UpdateType.Fixed)
-                .SetTarget(gameObject);
-        }
+        StartOrbitPath();
     }
 
     void Update()
@@ -43,6 +35,12 @@ public class PlanetController : MonoBehaviour
                 Shoot(shootDirection);
             }
         }
+    }
+
+    void LateUpdate()
+    {
+        // Lock rotation so sprite doesn't tilt
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     void Aim()
@@ -60,17 +58,34 @@ public class PlanetController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
-        // Kill path tween
-        if (orbitTween != null && orbitTween.IsActive()) orbitTween.Kill();
+        // Kill orbit tween if active
+        if (orbitTween != null && orbitTween.IsActive())
+        {
+            orbitTween.Kill();
+            orbitTween = null;
+        }
 
-        // Launch with velocity
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.velocity = direction.normalized * shootForce;
 
-        // Update state
         isLaunched = true;
         isPlayerControlled = false;
         if (aimLine != null) aimLine.enabled = false;
+    }
+
+    void StartOrbitPath()
+    {
+        if (pathTween != null && !isLaunched)
+        {
+            orbitTween = transform.DOPath(pathTween.wps.ToArray(), pathTween.duration, PathType.CatmullRom)
+           .SetEase(pathTween.easeType)
+           .SetLoops(pathTween.loops)
+           .SetOptions(true) // Close path = true
+           .SetAutoKill(false)
+           .Pause(); // start paused
+
+            orbitTween.Play(); // Play manually when ready
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)

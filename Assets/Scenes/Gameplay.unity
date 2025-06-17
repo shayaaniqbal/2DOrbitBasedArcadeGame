@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 57085011}
   - component: {fileID: 57085014}
   - component: {fileID: 57085015}
-  - component: {fileID: 57085016}
   - component: {fileID: 57085017}
   m_Layer: 0
   m_Name: Red
@@ -290,19 +289,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 489699356}
---- !u!114 &57085016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57085010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4db33657fe59c454ca5ed980be265fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 57085017}
 --- !u!114 &57085017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,7 +1885,6 @@ GameObject:
   - component: {fileID: 1631908419}
   - component: {fileID: 1631908418}
   - component: {fileID: 1631908422}
-  - component: {fileID: 1631908423}
   - component: {fileID: 1631908424}
   m_Layer: 0
   m_Name: Orange
@@ -2057,19 +2042,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 472672442}
---- !u!114 &1631908423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1631908417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4db33657fe59c454ca5ed980be265fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 1631908424}
 --- !u!114 &1631908424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2571,7 +2543,6 @@ GameObject:
   - component: {fileID: 2072523929}
   - component: {fileID: 2072523928}
   - component: {fileID: 2072523932}
-  - component: {fileID: 2072523933}
   - component: {fileID: 2072523934}
   m_Layer: 0
   m_Name: Blue
@@ -2729,19 +2700,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1100783304}
---- !u!114 &2072523933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2072523927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4db33657fe59c454ca5ed980be265fc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 2072523934}
 --- !u!114 &2072523934
 MonoBehaviour:
   m_ObjectHideFlags: 0
