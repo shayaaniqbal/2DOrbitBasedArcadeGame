@@ -63,5 +63,8 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f; // Ensure time resumes before reloading
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
     }
+
+    
 }
