@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -13,8 +13,13 @@ public class PlanetController : MonoBehaviour
     private bool isLaunched = false;
     private Tween orbitTween;
 
+    // 👇 New Fields for Sprite Change
+    private SpriteRenderer spriteRenderer;
+    public Sprite hitSprite;
+
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         rb.freezeRotation = true;
@@ -90,6 +95,9 @@ public class PlanetController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+
+        spriteRenderer.sprite = hitSprite;
+
         // If it hits a death zone, trigger game over
         if (collision.gameObject.CompareTag("DeathZone"))
         {
@@ -105,7 +113,11 @@ public class PlanetController : MonoBehaviour
         PlanetController hitPlanet = collision.gameObject.GetComponent<PlanetController>();
         if (hitPlanet != null && hitPlanet != this && !hitPlanet.isLaunched)
         {
+            
+          
             Level.Instance.HandlePlanetHit(this, hitPlanet);
+
+            
         }
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
@@ -15,9 +15,7 @@ public class LevelManager : MonoBehaviour
         if (Instance == null) Instance = this;
     }
 
-    void Start()
-    {
-    }
+    
 
     public void EnsureFirstLevelUnlocked()
     {
@@ -31,6 +29,9 @@ public class LevelManager : MonoBehaviour
 
     public void LoadSelectedLevel()
     {
+        // ✅ Load the selected index from PlayerPrefs first
+        selectedLevelIndex = PlayerPrefs.GetInt("SelectedLevelIndex", 0);
+
         // Disable all levels
         foreach (var level in levels)
         {
@@ -62,9 +63,8 @@ public class LevelManager : MonoBehaviour
                 return;
             }
         }
-
-        Debug.LogWarning("No unlocked levels found to load.");
     }
+
 
     public void CompleteLevel()
     {

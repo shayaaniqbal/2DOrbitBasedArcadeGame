@@ -3402,6 +3402,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1099013992}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &305431128
 Transform:
   m_ObjectHideFlags: 0
@@ -4566,6 +4567,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1251987349}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &418997236
 Transform:
   m_ObjectHideFlags: 0
@@ -5167,6 +5169,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 217912332}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &438264902
 Transform:
   m_ObjectHideFlags: 0
@@ -6773,6 +6776,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 820913804}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &543360019
 Transform:
   m_ObjectHideFlags: 0
@@ -7312,6 +7316,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 730879123}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &547134798
 Transform:
   m_ObjectHideFlags: 0
@@ -10867,6 +10872,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 2058929591}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &892508120
 Transform:
   m_ObjectHideFlags: 0
@@ -12010,6 +12016,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1356097923}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &984033106
 Transform:
   m_ObjectHideFlags: 0
@@ -13616,6 +13623,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1579032900}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &1069699970
 Transform:
   m_ObjectHideFlags: 0
@@ -15592,6 +15600,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 225175463}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &1212509863
 Transform:
   m_ObjectHideFlags: 0
@@ -17912,6 +17921,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 383879302}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &1315942786
 Transform:
   m_ObjectHideFlags: 0
@@ -19220,6 +19230,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1917212815}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &1407970617
 Transform:
   m_ObjectHideFlags: 0
@@ -24301,6 +24312,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 837058748}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &1968577848
 Transform:
   m_ObjectHideFlags: 0
@@ -25406,6 +25418,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1230303856}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!4 &2055518582
 Transform:
   m_ObjectHideFlags: 0
@@ -27101,6 +27114,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 5219330065083539642}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!70 &1475308316388461575
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -27736,6 +27750,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 8826679704924343784}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!1 &5127665182912850083
 GameObject:
   m_ObjectHideFlags: 0
@@ -28132,6 +28147,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 5645131441903466722}
+  hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
 --- !u!1 &6884467907475801240
 GameObject:
   m_ObjectHideFlags: 0

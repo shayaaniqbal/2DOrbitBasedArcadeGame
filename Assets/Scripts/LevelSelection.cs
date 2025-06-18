@@ -28,7 +28,7 @@ public class LevelSelection : MonoBehaviour
                 PlayerPrefs.Save();
                 UIManager.Instance.HideLevelMenu();
                 UIManager.Instance.ShowTapToPlay();
-                Debug.Log("???????");
+                
             });
         }
     }
