@@ -6,17 +6,38 @@ using GoogleMobileAds.Common;
 
 public class AdMobManager : MonoBehaviour
 {
-    [Header("Ad Unit IDs - Leave empty for test ads")]
-    [SerializeField] private string androidBannerAdUnitId = "";
-    [SerializeField] private string iosBannerAdUnitId = "";
-    [SerializeField] private string androidInterstitialAdUnitId = "";
-    [SerializeField] private string iosInterstitialAdUnitId = "";
-    [SerializeField] private string androidRewardedAdUnitId = "";
-    [SerializeField] private string iosRewardedAdUnitId = "";
-    [SerializeField] private string androidRewardedInterstitialAdUnitId = "";
-    [SerializeField] private string iosRewardedInterstitialAdUnitId = "";
+    [System.Serializable]
+    public class PlatformAdSettings
+    {
+        [Header("Banner Ad")]
+        public bool enableBanner = false;
+        [SerializeField] private string bannerAdUnitId = "";
 
-    [Header("Settings")]
+        [Header("Interstitial Ad")]
+        public bool enableInterstitial = false;
+        [SerializeField] private string interstitialAdUnitId = "";
+
+        [Header("Rewarded Ad")]
+        public bool enableRewarded = false;
+        [SerializeField] private string rewardedAdUnitId = "";
+
+        [Header("Rewarded Interstitial Ad")]
+        public bool enableRewardedInterstitial = false;
+        [SerializeField] private string rewardedInterstitialAdUnitId = "";
+
+        public string GetBannerAdUnitId() => bannerAdUnitId;
+        public string GetInterstitialAdUnitId() => interstitialAdUnitId;
+        public string GetRewardedAdUnitId() => rewardedAdUnitId;
+        public string GetRewardedInterstitialAdUnitId() => rewardedInterstitialAdUnitId;
+    }
+
+    [Header("Android Settings")]
+    [SerializeField] private PlatformAdSettings androidSettings = new PlatformAdSettings();
+
+    [Header("iOS Settings")]
+    [SerializeField] private PlatformAdSettings iosSettings = new PlatformAdSettings();
+
+    [Header("General Settings")]
     [SerializeField] private bool enableTestMode = true;
     [SerializeField] private bool showBannerOnStart = false;
     [SerializeField] private AdPosition bannerPosition = AdPosition.Bottom;
@@ -48,6 +69,24 @@ public class AdMobManager : MonoBehaviour
     public bool IsRewardedLoaded { get; private set; }
     public bool IsRewardedInterstitialLoaded { get; private set; }
 
+    // Current platform settings
+    private PlatformAdSettings CurrentPlatformSettings
+    {
+        get
+        {
+#if UNITY_ANDROID
+            return androidSettings;
+#elif UNITY_IOS
+            return iosSettings;
+#else
+            return Application.platform == RuntimePlatform.Android ? androidSettings : iosSettings;
+#endif
+        }
+    }
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     private void Start()
     {
         InitializeAds();
@@ -64,10 +103,10 @@ public class AdMobManager : MonoBehaviour
             Debug.Log("AdMobManager: Google Mobile Ads initialized successfully");
             LogAdapterStatus(initStatus);
 
-            // Load ads after initialization
-            LoadAllAds();
+            // Load ads after initialization based on platform settings
+            LoadEnabledAds();
 
-            if (showBannerOnStart)
+            if (showBannerOnStart && CurrentPlatformSettings.enableBanner)
             {
                 ShowBanner();
             }
@@ -93,56 +132,79 @@ public class AdMobManager : MonoBehaviour
         }
     }
 
-    private void LoadAllAds()
+    private void LoadEnabledAds()
     {
-        LoadBanner();
-        LoadInterstitial();
-        LoadRewarded();
-        LoadRewardedInterstitial();
+        var settings = CurrentPlatformSettings;
+
+        if (settings.enableBanner)
+            LoadBanner();
+        else
+            Debug.Log("AdMobManager: Banner ads disabled for current platform");
+
+        if (settings.enableInterstitial)
+            LoadInterstitial();
+        else
+            Debug.Log("AdMobManager: Interstitial ads disabled for current platform");
+
+        if (settings.enableRewarded)
+            LoadRewarded();
+        else
+            Debug.Log("AdMobManager: Rewarded ads disabled for current platform");
+
+        if (settings.enableRewardedInterstitial)
+            LoadRewardedInterstitial();
+        else
+            Debug.Log("AdMobManager: Rewarded Interstitial ads disabled for current platform");
     }
     #endregion
 
     #region Ad Unit ID Helpers
     private string GetBannerAdUnitId()
     {
-        if (!string.IsNullOrEmpty(androidBannerAdUnitId) && Application.platform == RuntimePlatform.Android)
-            return androidBannerAdUnitId;
-        if (!string.IsNullOrEmpty(iosBannerAdUnitId) && Application.platform == RuntimePlatform.IPhonePlayer)
-            return iosBannerAdUnitId;
-        return TEST_BANNER_AD_UNIT_ID;
+        var settings = CurrentPlatformSettings;
+        if (!settings.enableBanner) return null;
+
+        string adUnitId = settings.GetBannerAdUnitId();
+        return !string.IsNullOrEmpty(adUnitId) ? adUnitId : TEST_BANNER_AD_UNIT_ID;
     }
 
     private string GetInterstitialAdUnitId()
     {
-        if (!string.IsNullOrEmpty(androidInterstitialAdUnitId) && Application.platform == RuntimePlatform.Android)
-            return androidInterstitialAdUnitId;
-        if (!string.IsNullOrEmpty(iosInterstitialAdUnitId) && Application.platform == RuntimePlatform.IPhonePlayer)
-            return iosInterstitialAdUnitId;
-        return TEST_INTERSTITIAL_AD_UNIT_ID;
+        var settings = CurrentPlatformSettings;
+        if (!settings.enableInterstitial) return null;
+
+        string adUnitId = settings.GetInterstitialAdUnitId();
+        return !string.IsNullOrEmpty(adUnitId) ? adUnitId : TEST_INTERSTITIAL_AD_UNIT_ID;
     }
 
     private string GetRewardedAdUnitId()
     {
-        if (!string.IsNullOrEmpty(androidRewardedAdUnitId) && Application.platform == RuntimePlatform.Android)
-            return androidRewardedAdUnitId;
-        if (!string.IsNullOrEmpty(iosRewardedAdUnitId) && Application.platform == RuntimePlatform.IPhonePlayer)
-            return iosRewardedAdUnitId;
-        return TEST_REWARDED_AD_UNIT_ID;
+        var settings = CurrentPlatformSettings;
+        if (!settings.enableRewarded) return null;
+
+        string adUnitId = settings.GetRewardedAdUnitId();
+        return !string.IsNullOrEmpty(adUnitId) ? adUnitId : TEST_REWARDED_AD_UNIT_ID;
     }
 
     private string GetRewardedInterstitialAdUnitId()
     {
-        if (!string.IsNullOrEmpty(androidRewardedInterstitialAdUnitId) && Application.platform == RuntimePlatform.Android)
-            return androidRewardedInterstitialAdUnitId;
-        if (!string.IsNullOrEmpty(iosRewardedInterstitialAdUnitId) && Application.platform == RuntimePlatform.IPhonePlayer)
-            return iosRewardedInterstitialAdUnitId;
-        return TEST_REWARDED_INTERSTITIAL_AD_UNIT_ID;
+        var settings = CurrentPlatformSettings;
+        if (!settings.enableRewardedInterstitial) return null;
+
+        string adUnitId = settings.GetRewardedInterstitialAdUnitId();
+        return !string.IsNullOrEmpty(adUnitId) ? adUnitId : TEST_REWARDED_INTERSTITIAL_AD_UNIT_ID;
     }
     #endregion
 
     #region Banner Ads
     public void LoadBanner()
     {
+        if (!CurrentPlatformSettings.enableBanner)
+        {
+            Debug.LogWarning("AdMobManager: Banner ads are disabled for current platform");
+            return;
+        }
+
         if (bannerView != null)
         {
             bannerView.Destroy();
@@ -166,6 +228,12 @@ public class AdMobManager : MonoBehaviour
 
     public void ShowBanner()
     {
+        if (!CurrentPlatformSettings.enableBanner)
+        {
+            Debug.LogWarning("AdMobManager: Banner ads are disabled for current platform");
+            return;
+        }
+
         if (bannerView != null)
         {
             bannerView.Show();
@@ -220,6 +288,12 @@ public class AdMobManager : MonoBehaviour
     #region Interstitial Ads
     public void LoadInterstitial()
     {
+        if (!CurrentPlatformSettings.enableInterstitial)
+        {
+            Debug.LogWarning("AdMobManager: Interstitial ads are disabled for current platform");
+            return;
+        }
+
         if (interstitialAd != null)
         {
             interstitialAd.Destroy();
@@ -249,6 +323,12 @@ public class AdMobManager : MonoBehaviour
 
     public void ShowInterstitial()
     {
+        if (!CurrentPlatformSettings.enableInterstitial)
+        {
+            Debug.LogWarning("AdMobManager: Interstitial ads are disabled for current platform");
+            return;
+        }
+
         if (interstitialAd != null && interstitialAd.CanShowAd())
         {
             Debug.Log("AdMobManager: Showing interstitial ad");
@@ -302,6 +382,12 @@ public class AdMobManager : MonoBehaviour
     #region Rewarded Ads
     public void LoadRewarded()
     {
+        if (!CurrentPlatformSettings.enableRewarded)
+        {
+            Debug.LogWarning("AdMobManager: Rewarded ads are disabled for current platform");
+            return;
+        }
+
         if (rewardedAd != null)
         {
             rewardedAd.Destroy();
@@ -331,6 +417,12 @@ public class AdMobManager : MonoBehaviour
 
     public void ShowRewarded()
     {
+        if (!CurrentPlatformSettings.enableRewarded)
+        {
+            Debug.LogWarning("AdMobManager: Rewarded ads are disabled for current platform");
+            return;
+        }
+
         if (rewardedAd != null && rewardedAd.CanShowAd())
         {
             Debug.Log("AdMobManager: Showing rewarded ad");
@@ -388,6 +480,12 @@ public class AdMobManager : MonoBehaviour
     #region Rewarded Interstitial Ads
     public void LoadRewardedInterstitial()
     {
+        if (!CurrentPlatformSettings.enableRewardedInterstitial)
+        {
+            Debug.LogWarning("AdMobManager: Rewarded Interstitial ads are disabled for current platform");
+            return;
+        }
+
         if (rewardedInterstitialAd != null)
         {
             rewardedInterstitialAd.Destroy();
@@ -417,6 +515,12 @@ public class AdMobManager : MonoBehaviour
 
     public void ShowRewardedInterstitial()
     {
+        if (!CurrentPlatformSettings.enableRewardedInterstitial)
+        {
+            Debug.LogWarning("AdMobManager: Rewarded Interstitial ads are disabled for current platform");
+            return;
+        }
+
         if (rewardedInterstitialAd != null && rewardedInterstitialAd.CanShowAd())
         {
             Debug.Log("AdMobManager: Showing rewarded interstitial ad");
@@ -473,8 +577,8 @@ public class AdMobManager : MonoBehaviour
     #region Public Utility Methods
     public void ReloadAllAds()
     {
-        Debug.Log("AdMobManager: Reloading all ads");
-        LoadAllAds();
+        Debug.Log("AdMobManager: Reloading all enabled ads");
+        LoadEnabledAds();
     }
 
     public void SetBannerPosition(AdPosition position)
@@ -493,7 +597,37 @@ public class AdMobManager : MonoBehaviour
 
     public void LogAdStatus()
     {
-        Debug.Log($"AdMobManager Status - Banner: {IsBannerLoaded}, Interstitial: {IsInterstitialLoaded}, Rewarded: {IsRewardedLoaded}, RewardedInterstitial: {IsRewardedInterstitialLoaded}");
+        var settings = CurrentPlatformSettings;
+        string platform = Application.platform == RuntimePlatform.Android ? "Android" : "iOS";
+
+        Debug.Log($"AdMobManager Status ({platform}):");
+        Debug.Log($"  Banner: Enabled={settings.enableBanner}, Loaded={IsBannerLoaded}");
+        Debug.Log($"  Interstitial: Enabled={settings.enableInterstitial}, Loaded={IsInterstitialLoaded}");
+        Debug.Log($"  Rewarded: Enabled={settings.enableRewarded}, Loaded={IsRewardedLoaded}");
+        Debug.Log($"  RewardedInterstitial: Enabled={settings.enableRewardedInterstitial}, Loaded={IsRewardedInterstitialLoaded}");
+    }
+
+    public PlatformAdSettings GetCurrentPlatformSettings()
+    {
+        return CurrentPlatformSettings;
+    }
+
+    public bool IsAdTypeEnabled(AdType adType)
+    {
+        var settings = CurrentPlatformSettings;
+        switch (adType)
+        {
+            case AdType.Banner:
+                return settings.enableBanner;
+            case AdType.Interstitial:
+                return settings.enableInterstitial;
+            case AdType.Rewarded:
+                return settings.enableRewarded;
+            case AdType.RewardedInterstitial:
+                return settings.enableRewardedInterstitial;
+            default:
+                return false;
+        }
     }
     #endregion
 
@@ -572,8 +706,8 @@ public class AdMobManager : MonoBehaviour
     {
         if (enableEditorTesting)
         {
-            Debug.Log("Editor Test: Loading All Ads");
-            LoadAllAds();
+            Debug.Log("Editor Test: Loading All Enabled Ads");
+            LoadEnabledAds();
         }
     }
 
@@ -586,5 +720,15 @@ public class AdMobManager : MonoBehaviour
         }
     }
 #endif
+    #endregion
+
+    #region Enums
+    public enum AdType
+    {
+        Banner,
+        Interstitial,
+        Rewarded,
+        RewardedInterstitial
+    }
     #endregion
 }

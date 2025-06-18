@@ -19,7 +19,8 @@ public class LevelSelection : MonoBehaviour
             {
                 PlayerPrefs.SetInt("SelectedLevelIndex", index);
                 PlayerPrefs.Save();
-                SceneManager.LoadScene(1); // Load Scene 1 that contains your levels
+                UIManager.Instance.HideLevelMenu();
+                UIManager.Instance.ShowTapToPlay();
             });
         }
     }

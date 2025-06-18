@@ -11,19 +11,15 @@ public class SplashManager : MonoBehaviour
     {
         adMobManager = FindObjectOfType<AdMobManager>();
     }
+    private void Start()
+    {
+        Invoke(nameof(LoadNextScene), 3f);
+    }
     public void LoadNextScene()
     {
         SceneManager.LoadScene(1); // Loads scene with build index 1
     }
 
 
-    public void ShowIAd()
-    {
-       adMobManager.ShowInterstitial();
-    }
-
-   public void ShowRAd()
-    {
-        adMobManager.ShowRewarded();
-    }
+  
 }

@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject tapToPlayPanel;
+    [SerializeField] private GameObject levelMenuPanel;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         HideAllPanels();
+        ShowLevelMenu();
     }
 
     public void ShowWin()
@@ -33,6 +36,13 @@ public class UIManager : MonoBehaviour
     public void ShowGameOver() => ShowPanel(gameOverPanel);
     public void ShowSettings() => ShowPanel(settingsPanel);
     public void HideSettings() => HidePanel(settingsPanel);
+    public void ShowTapToPlay() => ShowPanel(tapToPlayPanel);
+    public void HideTapToPlay() => HidePanel(tapToPlayPanel);
+    public void ShowLevelMenu() => ShowPanel(levelMenuPanel);
+    public void HideLevelMenu() => HidePanel(levelMenuPanel);
+
+    public void ShowWinPanel()=>ShowPanel(winPanel);
+    public void HideWinPanel()=>HidePanel(winPanel);
 
     private void ShowPanel(GameObject panel)
     {
@@ -74,10 +84,12 @@ public class UIManager : MonoBehaviour
     IEnumerator LoadSceneAfterDelay()
     {
         LevelManager.Instance.CompleteLevel();
-        winPanel.SetActive(true);
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(0);
+        ShowWinPanel();
+        yield return null;
+        //yield return new WaitForSeconds(2);
+        //SceneManager.LoadScene(0);
     }
+    
 
 }
 
