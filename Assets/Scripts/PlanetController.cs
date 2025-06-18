@@ -17,6 +17,10 @@ public class PlanetController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite hitSprite;
 
+
+    public Transform targetPoint; // 👈 Assign this in Inspector
+
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -50,8 +54,9 @@ public class PlanetController : MonoBehaviour
 
     void Aim()
     {
-        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 dir = (mouseWorld - transform.position).normalized;
+        if (targetPoint == null) return;
+
+        Vector2 dir = ((Vector2)targetPoint.position - (Vector2)transform.position).normalized;
 
         if (aimLine != null)
         {
@@ -61,7 +66,7 @@ public class PlanetController : MonoBehaviour
         }
     }
 
-    void Shoot(Vector2 direction)
+    void Shoot(Vector2 _)
     {
         // Kill orbit tween if active
         if (orbitTween != null && orbitTween.IsActive())
@@ -70,12 +75,23 @@ public class PlanetController : MonoBehaviour
             orbitTween = null;
         }
 
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.velocity = direction.normalized * shootForce;
+        if (aimLine != null && aimLine.positionCount >= 2)
+        {
+            Vector2 start = aimLine.GetPosition(0);
+            Vector2 end = aimLine.GetPosition(1);
+            Vector2 shootDir = (end - start).normalized;
 
-        isLaunched = true;
-        isPlayerControlled = false;
-        if (aimLine != null) aimLine.enabled = false;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = shootDir * shootForce;
+
+            isLaunched = true;
+            isPlayerControlled = false;
+            aimLine.enabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("Aim line not set up correctly.");
+        }
     }
 
     void StartOrbitPath()
