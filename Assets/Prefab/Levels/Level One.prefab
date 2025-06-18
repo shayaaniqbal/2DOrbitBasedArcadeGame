@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5e097e81f764b4b8f0d574ff20c167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFreeForAll: 1
+  isFreeForAll: 0
   planets:
   - {fileID: 18616509371546771}
   - {fileID: 9102288472757773291}
@@ -2250,7 +2250,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   delay: 0
-  duration: 4
+  duration: 2.5
   easeType: 1
   easeCurve:
     serializedVersion: 2
@@ -2883,7 +2883,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   delay: 0
-  duration: 5
+  duration: 2
   easeType: 1
   easeCurve:
     serializedVersion: 2

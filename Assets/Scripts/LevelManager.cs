@@ -115,7 +115,7 @@ public class LevelManager : MonoBehaviour
 
     public void PlayCurrentLevel()
     {
-        int newIndex = PlayerPrefs.GetInt("SelectedLevelIndex", 0);
+        
 
         // Destroy ALL previously loaded levels (not just current one)
         for (int i = 0; i < levels.Length; i++)
@@ -128,7 +128,7 @@ public class LevelManager : MonoBehaviour
         }
 
         // Now load the new level
-        selectedLevelIndex = newIndex;
+        selectedLevelIndex = currentLevelIndex;
 
         if (selectedLevelIndex >= 0 && selectedLevelIndex < levelPrefabs.Length)
         {
