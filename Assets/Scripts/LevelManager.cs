@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[] levels;                // Assign 5 level GameObjects in inspector
 
     private const string LevelKey = "Level_";
-    private int currentLevelIndex = 0;
+    public int currentLevelIndex = 0;
 
     void Awake()
     {
@@ -17,11 +17,9 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        EnsureFirstLevelUnlocked();     // Ensure level 0 is unlocked
-        LoadSelectedLevel();            // Then load the selected level
     }
 
-    void EnsureFirstLevelUnlocked()
+    public void EnsureFirstLevelUnlocked()
     {
         if (!PlayerPrefs.HasKey(LevelKey + 0))
         {
@@ -31,7 +29,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void LoadSelectedLevel()
+    public void LoadSelectedLevel()
     {
         // Disable all levels
         foreach (var level in levels)
@@ -104,6 +102,15 @@ public class LevelManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Next level not unlocked or out of range.");
+        }
+    }
+
+    public void DisableLevels()
+    {
+        // Disable all levels
+        foreach (var level in levels)
+        {
+            if (level != null) level.SetActive(false);
         }
     }
 }

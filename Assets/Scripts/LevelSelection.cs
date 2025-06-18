@@ -6,7 +6,14 @@ public class LevelSelection : MonoBehaviour
 {
     public Button[] levelButtons;
 
-    void Start()
+
+
+    private void Start()
+    {
+        LevelSelectionUpdate();
+    }
+
+    public void LevelSelectionUpdate()
     {
         for (int i = 0; i < levelButtons.Length; i++)
         {
@@ -21,6 +28,7 @@ public class LevelSelection : MonoBehaviour
                 PlayerPrefs.Save();
                 UIManager.Instance.HideLevelMenu();
                 UIManager.Instance.ShowTapToPlay();
+                Debug.Log("???????");
             });
         }
     }

@@ -1,9 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+
+    public LevelManager Levels;
+    public LevelSelection LevelSelection;
     public static UIManager Instance { get; private set; }
 
     [Header("UI Panels")]
@@ -12,6 +16,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject tapToPlayPanel;
     [SerializeField] private GameObject levelMenuPanel;
+
+
+    [Header("UI Panels")]
+    public Text LevelNumber;
+    public Text NextLevel;
+
+
 
     private void Awake()
     {
@@ -29,6 +40,8 @@ public class UIManager : MonoBehaviour
         ShowLevelMenu();
     }
 
+   
+
     public void ShowWin()
     {
         StartCoroutine(LoadSceneAfterDelay());
@@ -41,8 +54,8 @@ public class UIManager : MonoBehaviour
     public void ShowLevelMenu() => ShowPanel(levelMenuPanel);
     public void HideLevelMenu() => HidePanel(levelMenuPanel);
 
-    public void ShowWinPanel()=>ShowPanel(winPanel);
-    public void HideWinPanel()=>HidePanel(winPanel);
+    public void ShowWinPanel() => ShowPanel(winPanel);
+    public void HideWinPanel() => HidePanel(winPanel);
 
     private void ShowPanel(GameObject panel)
     {
@@ -83,13 +96,31 @@ public class UIManager : MonoBehaviour
 
     IEnumerator LoadSceneAfterDelay()
     {
-        LevelManager.Instance.CompleteLevel();
+       
+        Levels.CompleteLevel();
+        LevelSelection.LevelSelectionUpdate();
         ShowWinPanel();
+        LevelNumberUpdate();
         yield return null;
-        //yield return new WaitForSeconds(2);
-        //SceneManager.LoadScene(0);
+        
     }
-    
 
+
+
+    public void Homebutton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    public void LevelNumberUpdate()
+    {
+        int displayLevel = LevelManager.selectedLevelIndex ;
+        LevelNumber.text =  displayLevel.ToString();
+
+        int Level = LevelManager.selectedLevelIndex + 1 ;
+        NextLevel.text =  Level.ToString();
+
+    }
 }
 
