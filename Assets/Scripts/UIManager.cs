@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour
     public void ShowWinPanel() => ShowPanel(winPanel);
     public void HideWinPanel() => HidePanel(winPanel);
 
+    public void HideGameOverPanel() => HidePanel(gameOverPanel);
     private void ShowPanel(GameObject panel)
     {
         HideAllPanels();

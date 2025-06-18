@@ -5,17 +5,20 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance;
 
     public static int selectedLevelIndex = 0;  // Set externally in Scene 0
-    public GameObject[] levels;                // Assign 5 level GameObjects in inspector
-
+    public GameObject[] levelPrefabs;          // ⬅️ New: Assign level prefabs here
+    public GameObject[] levels;
     private const string LevelKey = "Level_";
     public int currentLevelIndex = 0;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
+
+        // ⬇️ Optional: initialize runtime levels array
+        levels = new GameObject[levelPrefabs.Length];
     }
 
-    
+
 
     public void EnsureFirstLevelUnlocked()
     {
@@ -29,21 +32,18 @@ public class LevelManager : MonoBehaviour
 
     public void LoadSelectedLevel()
     {
-        // ✅ Load the selected index from PlayerPrefs first
         selectedLevelIndex = PlayerPrefs.GetInt("SelectedLevelIndex", 0);
 
-        // Disable all levels
-        foreach (var level in levels)
-        {
-            if (level != null) level.SetActive(false);
-        }
+        DisableLevels();
 
-        // Check if selected level is valid and unlocked
-        if (selectedLevelIndex >= 0 && selectedLevelIndex < levels.Length)
+        if (selectedLevelIndex >= 0 && selectedLevelIndex < levelPrefabs.Length)
         {
             int unlocked = PlayerPrefs.GetInt(LevelKey + selectedLevelIndex, 0);
             if (unlocked == 1)
             {
+                if (levels[selectedLevelIndex] == null)
+                    levels[selectedLevelIndex] = Instantiate(levelPrefabs[selectedLevelIndex]);
+
                 levels[selectedLevelIndex].SetActive(true);
                 currentLevelIndex = selectedLevelIndex;
                 Debug.Log("Loaded Level: " + selectedLevelIndex);
@@ -51,11 +51,13 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        // Fallback: show first unlocked level
-        for (int i = 0; i < levels.Length; i++)
+        for (int i = 0; i < levelPrefabs.Length; i++)
         {
             if (PlayerPrefs.GetInt(LevelKey + i, 0) == 1)
             {
+                if (levels[i] == null)
+                    levels[i] = Instantiate(levelPrefabs[i]);
+
                 levels[i].SetActive(true);
                 currentLevelIndex = i;
                 selectedLevelIndex = i;
@@ -64,6 +66,7 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+
 
 
     public void CompleteLevel()
@@ -91,9 +94,14 @@ public class LevelManager : MonoBehaviour
     {
         int nextIndex = currentLevelIndex + 1;
 
-        if (nextIndex < levels.Length && PlayerPrefs.GetInt(LevelKey + nextIndex, 0) == 1)
+        if (nextIndex < levelPrefabs.Length && PlayerPrefs.GetInt(LevelKey + nextIndex, 0) == 1)
         {
-            levels[currentLevelIndex].SetActive(false);
+            if (levels[currentLevelIndex] != null)
+                levels[currentLevelIndex].SetActive(false);
+
+            if (levels[nextIndex] == null)
+                levels[nextIndex] = Instantiate(levelPrefabs[nextIndex]);
+
             levels[nextIndex].SetActive(true);
             currentLevelIndex = nextIndex;
             selectedLevelIndex = nextIndex;
@@ -105,12 +113,44 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void PlayCurrentLevel()
+    {
+        int newIndex = PlayerPrefs.GetInt("SelectedLevelIndex", 0);
+
+        // Destroy ALL previously loaded levels (not just current one)
+        for (int i = 0; i < levels.Length; i++)
+        {
+            if (levels[i] != null)
+            {
+                Destroy(levels[i]);
+                levels[i] = null;
+            }
+        }
+
+        // Now load the new level
+        selectedLevelIndex = newIndex;
+
+        if (selectedLevelIndex >= 0 && selectedLevelIndex < levelPrefabs.Length)
+        {
+            levels[selectedLevelIndex] = Instantiate(levelPrefabs[selectedLevelIndex]);
+            levels[selectedLevelIndex].SetActive(true);
+            currentLevelIndex = selectedLevelIndex;
+            Debug.Log("Playing level at index: " + selectedLevelIndex);
+        }
+        else
+        {
+            Debug.LogWarning("Selected level index out of bounds: " + selectedLevelIndex);
+        }
+    }
+
+
+
     public void DisableLevels()
     {
-        // Disable all levels
-        foreach (var level in levels)
+        for (int i = 0; i < levels.Length; i++)
         {
-            if (level != null) level.SetActive(false);
+            if (levels[i] != null)
+                levels[i].SetActive(false);
         }
     }
 }
