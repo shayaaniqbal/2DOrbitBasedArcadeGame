@@ -115,8 +115,8 @@ public class LevelManager : MonoBehaviour
 
     public void PlayCurrentLevel()
     {
-        
 
+        SoundManager.Instance.PlayButtonClickSFX();
         // Destroy ALL previously loaded levels (not just current one)
         for (int i = 0; i < levels.Length; i++)
         {

@@ -117,6 +117,7 @@ public class PlanetController : MonoBehaviour
         // If it hits a death zone, trigger game over
         if (collision.gameObject.CompareTag("DeathZone"))
         {
+            SoundManager.Instance.PlayHitSFX();
             Level.Instance.DestroyPlanet(this);
             UIManager.Instance.ShowGameOver();
             Debug.Log("Game Over - Planet hit the DeathZone");

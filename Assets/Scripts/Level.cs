@@ -44,6 +44,8 @@ public class Level : MonoBehaviour
 
     public void HandlePlanetHit(PlanetController shooter, PlanetController target)
     {
+        SoundManager.Instance.PlayHitSFX();
+
         if (IsFinalPairFreeForAll(shooter, target))
         {
             DestroyPlanet(shooter);

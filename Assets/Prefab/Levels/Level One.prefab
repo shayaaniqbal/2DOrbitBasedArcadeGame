@@ -2148,9 +2148,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 8390247674703429848}
-  numberOfDots: 8
-  dotSpacing: 0.8
-  dotColor: {r: 1, g: 1, b: 1, a: 1}
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 6981712014077763510}
 --- !u!114 &5804198096529234098
@@ -2196,7 +2193,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   delay: 0
-  duration: 2.5
+  duration: 4
   easeType: 1
   easeCurve:
     serializedVersion: 2
@@ -2779,9 +2776,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 7258683866588288964}
-  numberOfDots: 8
-  dotSpacing: 0.8
-  dotColor: {r: 1, g: 1, b: 1, a: 1}
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 6981712014077763510}
 --- !u!114 &8689920515097196490
@@ -2827,7 +2821,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   delay: 0
-  duration: 2
+  duration: 3
   easeType: 1
   easeCurve:
     serializedVersion: 2
@@ -3348,9 +3342,6 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 8212334308934892139}
-  numberOfDots: 3
-  dotSpacing: 2
-  dotColor: {r: 1, g: 1, b: 1, a: 1}
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 6981712014077763510}
 --- !u!114 &4123625083402555829
@@ -3396,7 +3387,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   delay: 0
-  duration: 3
+  duration: 5
   easeType: 1
   easeCurve:
     serializedVersion: 2

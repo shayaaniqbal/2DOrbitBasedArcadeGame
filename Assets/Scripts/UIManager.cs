@@ -67,6 +67,7 @@ public class UIManager : MonoBehaviour
 
     private void HidePanel(GameObject panel)
     {
+        SoundManager.Instance.PlayButtonClickSFX();
         if (panel != null) panel.SetActive(false);
         if (!AnyPanelActive()) Time.timeScale = 1;
     }
@@ -110,6 +111,8 @@ public class UIManager : MonoBehaviour
 
     public void Homebutton()
     {
+        SoundManager.Instance.PlayButtonClickSFX();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
