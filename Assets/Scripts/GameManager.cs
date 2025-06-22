@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        SoundManager.Instance.PlayButtonClickSFX();
+        SoundManager.Instance.PlayLevelMusic(LevelManager.Instance.currentLevelIndex);
+
+
         GameStarted = true;
         Debug.Log("Game has started!");
 

@@ -7,7 +7,11 @@ public class LevelSelection : MonoBehaviour
     public Button[] levelButtons;
 
 
+    private void OnEnable()
+    {
+        SoundManager.Instance.PlayMainMenuMusic();
 
+    }
     private void Start()
     {
         LevelSelectionUpdate();
@@ -28,6 +32,7 @@ public class LevelSelection : MonoBehaviour
                 PlayerPrefs.Save();
                 UIManager.Instance.HideLevelMenu();
                 UIManager.Instance.ShowTapToPlay();
+                SoundManager.Instance.PlayButtonClickSFX();
                 
             });
         }
