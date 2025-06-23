@@ -10,7 +10,7 @@ public class PlanetController : MonoBehaviour
     public LineRenderer aimLine;
 
     private Rigidbody2D rb;
-    private bool isLaunched = false;
+    public bool isLaunched = false;
     private Tween orbitTween;
 
     // 👇 New Fields for Sprite Change
@@ -109,13 +109,12 @@ public class PlanetController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-
         spriteRenderer.sprite = hitSprite;
 
         // If it hits a death zone, trigger game over
-        if (collision.gameObject.CompareTag("DeathZone"))
+        if (collider.gameObject.CompareTag("DeathZone"))
         {
             SoundManager.Instance.PlayHitSFX();
             Level.Instance.DestroyPlanet(this);
@@ -127,14 +126,11 @@ public class PlanetController : MonoBehaviour
         // Normal planet-planet collision logic
         if (!isLaunched) return;
 
-        PlanetController hitPlanet = collision.gameObject.GetComponent<PlanetController>();
+        PlanetController hitPlanet = collider.gameObject.GetComponent<PlanetController>();
         if (hitPlanet != null && hitPlanet != this && !hitPlanet.isLaunched)
         {
-            
-          
             Level.Instance.HandlePlanetHit(this, hitPlanet);
-
-            
         }
     }
+
 }

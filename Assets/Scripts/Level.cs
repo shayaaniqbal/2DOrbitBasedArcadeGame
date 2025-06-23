@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class Level : MonoBehaviour
@@ -6,7 +6,7 @@ public class Level : MonoBehaviour
     public static Level Instance;
 
     [Header("Game Mode")]
-    public bool isFreeForAll = true; // Toggle in Inspector
+    public bool isFreeForAll ; // Toggle in Inspector
 
     [Header("Planet Settings")]
     public List<PlanetController> planets = new List<PlanetController>();
@@ -22,6 +22,8 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+        
+
         originalOrder = new List<PlanetController>(planets);
 
         if (planets.Count > 0)
@@ -46,46 +48,53 @@ public class Level : MonoBehaviour
     {
         SoundManager.Instance.PlayHitSFX();
 
-        if (IsFinalPairFreeForAll(shooter, target))
-        {
-            DestroyPlanet(shooter);
-            DestroyPlanet(target);
-            UIManager.Instance.ShowWin();
-          
-
-            return;
-        }
-
         if (isFreeForAll)
         {
-            DestroyPlanet(shooter);
-            SwitchControlTo(target);
-
-            if (planets.Count == 1)
+            if (IsFinalPairFreeForAll(shooter, target))
             {
+                DestroyPlanet(shooter);
+                DestroyPlanet(target);
                 UIManager.Instance.ShowWin();
-               
+                return;
+            }
+
+            // Allow hitting ANY other unlaunched planet (no order needed)
+            if (target != shooter && !target.isLaunched && planets.Contains(target))
+            {
+                DestroyPlanet(shooter);
+                SwitchControlTo(target);
+
+                if (planets.Count == 1)
+                {
+                    UIManager.Instance.ShowWin();
+                }
+            }
+            else
+            {
+                Debug.Log("Game Over - Invalid target in FreeForAll");
+                UIManager.Instance.ShowGameOver();
+                DestroyPlanet(shooter);
             }
         }
-        else
+        else // Ordered Mode
         {
             int shooterIndex = originalOrder.IndexOf(shooter);
             int targetIndex = originalOrder.IndexOf(target);
 
             if (targetIndex == currentIndex + 1)
             {
-                if (IsFinalPairForArrangement(shooter, target))
+                bool isFinalPair = IsFinalPairForArrangement(shooter, target);
+
+                currentIndex = targetIndex;
+                DestroyPlanet(shooter);
+
+                if (isFinalPair)
                 {
-                    // Both are last two and in correct order
-                    DestroyPlanet(shooter);
                     DestroyPlanet(target);
                     UIManager.Instance.ShowWin();
-                  
                     return;
                 }
 
-                DestroyPlanet(shooter);
-                currentIndex = targetIndex;
                 SwitchControlTo(target);
             }
             else
@@ -93,10 +102,11 @@ public class Level : MonoBehaviour
                 Debug.Log("Game Over - Wrong target hit");
                 UIManager.Instance.ShowGameOver();
                 DestroyPlanet(shooter);
-                TriggerGameOver();
             }
         }
     }
+
+
 
     private bool IsFinalPairForArrangement(PlanetController shooter, PlanetController target)
     {

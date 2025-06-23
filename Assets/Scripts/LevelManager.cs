@@ -41,6 +41,8 @@ public class LevelManager : MonoBehaviour
             int unlocked = PlayerPrefs.GetInt(LevelKey + selectedLevelIndex, 0);
             if (unlocked == 1)
             {
+               
+
                 if (levels[selectedLevelIndex] == null)
                     levels[selectedLevelIndex] = Instantiate(levelPrefabs[selectedLevelIndex]);
 
@@ -96,8 +98,15 @@ public class LevelManager : MonoBehaviour
 
         if (nextIndex < levelPrefabs.Length && PlayerPrefs.GetInt(LevelKey + nextIndex, 0) == 1)
         {
+
             if (levels[currentLevelIndex] != null)
                 levels[currentLevelIndex].SetActive(false);
+
+            if (Level.Instance != null)
+            {
+                Destroy(Level.Instance.gameObject); // 💥 Remove old level from scene
+                Level.Instance = null;              // 🧹 Clear the reference
+            }
 
             if (levels[nextIndex] == null)
                 levels[nextIndex] = Instantiate(levelPrefabs[nextIndex]);
