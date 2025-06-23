@@ -465,7 +465,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.456, y: -0.522, z: -0.49999997}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7355481797723256145}
@@ -604,6 +604,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 7187942020587552161}
+  isLaunched: 0
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 7419392971918992126}
 --- !u!114 &1118761643809182641
@@ -1858,7 +1859,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.437, y: -1.774, z: -0.49999997}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1595298221520589770}
@@ -1997,6 +1998,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 6728498302166413769}
+  isLaunched: 0
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 2494147747635396706}
 --- !u!114 &6803414463022778366
@@ -3689,7 +3691,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.282, y: 1.79, z: -0.49999997}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2745025382491328973}
@@ -3828,6 +3830,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 7504320079395305559}
+  isLaunched: 0
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 8717011128149097959}
 --- !u!114 &9199318739725255680
@@ -4434,7 +4437,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.512, y: 2.465, z: -0.49999997}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8100613542867099552}
@@ -4573,6 +4576,7 @@ MonoBehaviour:
   isPlayerControlled: 1
   shootForce: 10
   aimLine: {fileID: 1769096794502119144}
+  isLaunched: 0
   hitSprite: {fileID: 21300000, guid: c6c3842eb083ce842b818243ad5c126f, type: 3}
   targetPoint: {fileID: 8739891110000179992}
 --- !u!114 &2860703342277179813

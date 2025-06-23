@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -96,16 +97,22 @@ public class LevelManager : MonoBehaviour
     {
         int nextIndex = currentLevelIndex + 1;
 
-        if (nextIndex < levelPrefabs.Length && PlayerPrefs.GetInt(LevelKey + nextIndex, 0) == 1)
+        // ✅ If it's past the last level, just reload the scene
+        if (nextIndex >= levelPrefabs.Length)
         {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
+        }
 
+        if (PlayerPrefs.GetInt(LevelKey + nextIndex, 0) == 1)
+        {
             if (levels[currentLevelIndex] != null)
                 levels[currentLevelIndex].SetActive(false);
 
             if (Level.Instance != null)
             {
-                Destroy(Level.Instance.gameObject); // 💥 Remove old level from scene
-                Level.Instance = null;              // 🧹 Clear the reference
+                Destroy(Level.Instance.gameObject);
+                Level.Instance = null;
             }
 
             if (levels[nextIndex] == null)
