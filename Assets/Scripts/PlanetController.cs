@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlanetController : MonoBehaviour
@@ -20,6 +21,7 @@ public class PlanetController : MonoBehaviour
 
     public Transform targetPoint; // 👈 Assign this in Inspector
 
+    public GameObject hitParticlePrefab; // 👈 Assign this in the inspector
 
     void Start()
     {
@@ -109,17 +111,34 @@ public class PlanetController : MonoBehaviour
         }
     }
 
+
+    void SpawnHitEffect(Vector2 position)
+    {
+        if (hitParticlePrefab != null)
+        {
+            // No parent — this keeps it outside in the scene hierarchy
+            Instantiate(hitParticlePrefab, position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Hit Particle Prefab not assigned.");
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
-        spriteRenderer.sprite = hitSprite;
+        
 
         // If it hits a death zone, trigger game over
         if (collider.gameObject.CompareTag("DeathZone"))
         {
             SoundManager.Instance.PlayHitSFX();
-            Level.Instance.DestroyPlanet(this);
+            Destroy(this.gameObject);
             UIManager.Instance.ShowGameOver();
-            Debug.Log("Game Over - Planet hit the DeathZone");
+
+            // 💥 Spawn hit particles at collision point
+            SpawnHitEffect(transform.position);
+
             return;
         }
 
@@ -129,7 +148,13 @@ public class PlanetController : MonoBehaviour
         PlanetController hitPlanet = collider.gameObject.GetComponent<PlanetController>();
         if (hitPlanet != null && hitPlanet != this && !hitPlanet.isLaunched)
         {
+            spriteRenderer.sprite = hitSprite;
+
             Level.Instance.HandlePlanetHit(this, hitPlanet);
+
+            // 💥 Spawn hit particles at collision point
+            SpawnHitEffect(transform.position);
+
         }
     }
 

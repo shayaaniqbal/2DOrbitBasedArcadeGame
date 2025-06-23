@@ -100,8 +100,9 @@ public class Level : MonoBehaviour
             else
             {
                 Debug.Log("Game Over - Wrong target hit");
-                UIManager.Instance.ShowGameOver();
                 DestroyPlanet(shooter);
+                DestroyPlanet(target);
+                UIManager.Instance.ShowGameOver();
             }
         }
     }
@@ -132,15 +133,8 @@ public class Level : MonoBehaviour
             Destroy(planet.gameObject);
         }
 
-        if (planets.Count == 0)
-        {
-            TriggerGameOver();
-        }
+       
     }
 
-    void TriggerGameOver()
-    {
-        Debug.Log("Game Over!");
-        // TODO: Add game over UI, restart, etc.
-    }
+   
 }

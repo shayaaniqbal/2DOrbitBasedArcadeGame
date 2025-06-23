@@ -46,23 +46,24 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(LoadSceneAfterDelay());
     }
-    public void ShowGameOver() => ShowPanel(gameOverPanel);
-    public void ShowSettings() => ShowPanel(settingsPanel);
+    public void ShowGameOver() => ShowPanel(gameOverPanel, 0);
+    public void ShowSettings() => ShowPanel(settingsPanel, 0);
     public void HideSettings() => HidePanel(settingsPanel);
-    public void ShowTapToPlay() => ShowPanel(tapToPlayPanel);
+    public void ShowTapToPlay() => ShowPanel(tapToPlayPanel, 0);
     public void HideTapToPlay() => HidePanel(tapToPlayPanel);
-    public void ShowLevelMenu() => ShowPanel(levelMenuPanel);
+    public void ShowLevelMenu() => ShowPanel(levelMenuPanel,0);
     public void HideLevelMenu() => HidePanel(levelMenuPanel);
 
-    public void ShowWinPanel() => ShowPanel(winPanel);
+    public void ShowWinPanel() => ShowPanel(winPanel, 1);
     public void HideWinPanel() => HidePanel(winPanel);
 
     public void HideGameOverPanel() => HidePanel(gameOverPanel);
-    private void ShowPanel(GameObject panel)
+    private void ShowPanel(GameObject panel ,float delay)
     {
-        HideAllPanels();
-        if (panel != null) panel.SetActive(true);
-        Time.timeScale = 0;
+        //HideAllPanels();
+        //if (panel != null) panel.SetActive(true);
+        StartCoroutine(ShowPanelCoroutine(panel, delay));
+
     }
 
     private void HidePanel(GameObject panel)
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour
         if (winPanel != null) winPanel.SetActive(false);
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(false);
-        Time.timeScale = 1;
+        
     }
 
     private bool AnyPanelActive()
@@ -107,7 +108,16 @@ public class UIManager : MonoBehaviour
         
     }
 
+   
 
+    private IEnumerator ShowPanelCoroutine(GameObject panel, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // Use WaitForSecondsRealtime so delay works even when timeScale is 0
+
+        HideAllPanels();
+        if (panel != null) panel.SetActive(true);
+        Time.timeScale = 0;
+    }
 
     public void Homebutton()
     {

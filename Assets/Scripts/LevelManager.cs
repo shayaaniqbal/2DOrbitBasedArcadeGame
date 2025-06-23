@@ -100,6 +100,9 @@ public class LevelManager : MonoBehaviour
         // ✅ If it's past the last level, just reload the scene
         if (nextIndex >= levelPrefabs.Length)
         {
+            if (levels[currentLevelIndex] != null)
+                levels[currentLevelIndex].SetActive(false);
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             return;
         }
@@ -121,11 +124,11 @@ public class LevelManager : MonoBehaviour
             levels[nextIndex].SetActive(true);
             currentLevelIndex = nextIndex;
             selectedLevelIndex = nextIndex;
-            Debug.Log("Manually loaded next unlocked level: " + nextIndex);
+           // Debug.Log("Manually loaded next unlocked level: " + nextIndex);
         }
         else
         {
-            Debug.LogWarning("Next level not unlocked or out of range.");
+           // Debug.LogWarning("Next level not unlocked or out of range.");
         }
     }
 
@@ -151,11 +154,11 @@ public class LevelManager : MonoBehaviour
             levels[selectedLevelIndex] = Instantiate(levelPrefabs[selectedLevelIndex]);
             levels[selectedLevelIndex].SetActive(true);
             currentLevelIndex = selectedLevelIndex;
-            Debug.Log("Playing level at index: " + selectedLevelIndex);
+           // Debug.Log("Playing level at index: " + selectedLevelIndex);
         }
         else
         {
-            Debug.LogWarning("Selected level index out of bounds: " + selectedLevelIndex);
+          //  Debug.LogWarning("Selected level index out of bounds: " + selectedLevelIndex);
         }
     }
 
