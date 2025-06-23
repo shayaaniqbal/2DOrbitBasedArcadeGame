@@ -135,6 +135,16 @@ public class LevelManager : MonoBehaviour
     public void PlayCurrentLevel()
     {
 
+
+        if (levels[currentLevelIndex] != null)
+            levels[currentLevelIndex].SetActive(false);
+
+        if (Level.Instance != null)
+        {
+            Destroy(Level.Instance.gameObject);
+            Level.Instance = null;
+        }
+
         SoundManager.Instance.PlayButtonClickSFX();
         // Destroy ALL previously loaded levels (not just current one)
         for (int i = 0; i < levels.Length; i++)
